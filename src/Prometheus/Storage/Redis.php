@@ -98,7 +98,7 @@ class Redis implements Adapter
         $metaData = $data;
         unset($metaData['value']);
         unset($metaData['labelValues']);
-        $this->redis->evaluate(<<<LUA
+        $this->redis->eval(<<<LUA
 local increment = redis.call('hIncrByFloat', KEYS[1], KEYS[2], ARGV[1])
 redis.call('hIncrBy', KEYS[1], KEYS[3], 1)
 if increment == ARGV[1] then
@@ -126,7 +126,7 @@ LUA
         unset($metaData['value']);
         unset($metaData['labelValues']);
         unset($metaData['command']);
-        $this->redis->evaluate(<<<LUA
+        $this->redis->eval(<<<LUA
 local result = redis.call(KEYS[2], KEYS[1], KEYS[4], ARGV[1])
 
 if KEYS[2] == 'hSet' then
@@ -160,7 +160,7 @@ LUA
         unset($metaData['value']);
         unset($metaData['labelValues']);
         unset($metaData['command']);
-        $result = $this->redis->evaluate(<<<LUA
+        $result = $this->redis->eval(<<<LUA
 local result = redis.call(KEYS[2], KEYS[1], KEYS[4], ARGV[1])
 if result == tonumber(ARGV[1]) then
     redis.call('hMSet', KEYS[1], '__meta', ARGV[2])
